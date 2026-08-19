@@ -1,0 +1,56 @@
+<Layouts.app flash={@flash} active_tab={nil} class="vocabulary-layout">
+  <section
+    id="vocabulary-page"
+    class="vocab-page"
+    data-vocabulary-root="true"
+    data-default-level="A2"
+  >
+    <div class="vocab-header">
+      <h1>Vocabulary</h1>
+
+      <.vocabulary_guide_banner active_level="A2" />
+
+      <div class="vocab-level-selector" aria-label="Vocabulary levels">
+        <div :for={level <- @level_order} class="vocab-level-cell">
+          <button
+            type="button"
+            class="vocab-level-tab"
+            data-vocab-level-tab={level}
+            data-active={to_string(level == "A2")}
+            aria-pressed={to_string(level == "A2")}
+          >
+            <span>{level}</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <span
+            class="level-exam-score"
+            data-level-exam-score={level}
+            data-exam-completed="false"
+          >
+            %0
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vocab-grid-region">
+      <div
+        :for={level <- @level_order}
+        id={"vocab-grid-#{level}"}
+        class="vocab-grid"
+        data-vocab-grid={level}
+        hidden={level != "A2"}
+      >
+        <.vocabulary_card
+          :for={{item, index} <- Enum.with_index(@levels[level])}
+          item={item}
+          index={index}
+        />
+        <.vocabulary_quiz_button level={level} />
+      </div>
+    </div>
+
+    <.vocabulary_quiz_screen />
+    <.flashcard_modal />
+  </section>
+</Layouts.app>

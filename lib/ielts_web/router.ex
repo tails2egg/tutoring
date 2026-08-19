@@ -10,7 +10,6 @@ defmodule IeltsWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  # One route per tab of the bottom bar, all rendering the same empty shell.
   scope "/", IeltsWeb do
     pipe_through :browser
 
@@ -18,6 +17,7 @@ defmodule IeltsWeb.Router do
     live "/activities", PageLive, :activities
     live "/payment", PageLive, :payment
     live "/progress", PageLive, :progress
+    get "/vocabulary", VocabularyController, :index
   end
 
   # Enable LiveDashboard in development

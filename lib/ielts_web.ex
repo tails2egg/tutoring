@@ -17,7 +17,8 @@ defmodule IeltsWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts favicon.ico robots.txt)
+  def static_paths,
+    do: ~w(assets fonts favicon.ico robots.txt pic loop.png guy.png guy1.png usa.png)
 
   def router do
     quote do

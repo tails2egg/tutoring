@@ -38,10 +38,18 @@ defmodule IeltsWeb.ShellTest do
       end
     end
 
-    test "leaves the page area between the bars empty", %{conn: conn} do
+    test "shows the flashcards task button on the home page", %{conn: conn} do
       {:ok, view, _html} = live(conn, ~p"/")
 
-      assert view |> element("#page") |> render() =~ ~r/<main[^>]*>\s*<\/main>/
+      assert has_element?(view, ~s(#flashcards-task-button[href="/vocabulary"]))
+    end
+
+    test "leaves non-home page areas between the bars empty", %{conn: conn} do
+      for {path, _label} <- Enum.reject(tabs(), fn {path, _label} -> path == ~p"/" end) do
+        {:ok, view, _html} = live(conn, path)
+
+        assert view |> element("#page") |> render() =~ ~r/<main[^>]*>\s*<\/main>/
+      end
     end
   end
 end

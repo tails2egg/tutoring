@@ -25,6 +25,16 @@ export default function IeltsHomeScreen() {
         <View style={styles.avatarDot} />
       </View>
 
+      <Link href="/vocabulary" asChild>
+        <Pressable style={StyleSheet.flatten([styles.flashTaskButton, shadows.soft])}>
+          <View style={styles.flashTaskIcon}>
+            <Ionicons name="albums-outline" size={24} color="#fff" />
+          </View>
+          <Text style={styles.flashTaskText}>Flashcards Task</Text>
+          <Ionicons name="arrow-back" size={22} color={colors.brandNavy} />
+        </Pressable>
+      </Link>
+
       <View style={styles.fullTestBlock}>
         <View style={styles.scoreTabRight}>
           <Text style={styles.scoreTabText}>{data.full_test.score}</Text>
@@ -105,6 +115,32 @@ const styles = StyleSheet.create({
   },
   hintText: { fontWeight: '500', color: colors.ink },
   avatarDot: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#1e3a8a' },
+  flashTaskButton: {
+    alignSelf: 'center',
+    width: '100%',
+    maxWidth: 360,
+    minHeight: 76,
+    marginTop: 20,
+    borderRadius: 16,
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.divider,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  flashTaskIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    backgroundColor: colors.brandNavy,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flashTaskText: { flex: 1, color: colors.ink, fontSize: 18, fontWeight: '700' },
   fullTestBlock: { marginTop: 20 },
   scoreTabRight: {
     alignSelf: 'flex-end',

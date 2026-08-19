@@ -20,6 +20,7 @@ export default function RootLayout() {
         <Stack.Screen name="ielts/[section]/index" />
         <Stack.Screen name="ielts/[section]/select" />
         <Stack.Screen name="practice/[slug]" />
+        <Stack.Screen name="vocabulary" />
       </Stack>
     </SafeAreaProvider>
   );

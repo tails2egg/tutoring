@@ -18,7 +18,8 @@ defmodule IeltsWeb do
   """
 
   def static_paths,
-    do: ~w(assets fonts favicon.ico robots.txt pic loop.png guy.png guy1.png usa.png)
+    do:
+      ~w(assets fonts favicon.ico robots.txt pic loop.png guy.png guy1.png usa.png welcome.png welcome1.png welcome2.png welcome3.png welcome4.png welcome5.png welcome6.png welcome7.png welcome8.png welcome9.png)
 
   def router do
     quote do

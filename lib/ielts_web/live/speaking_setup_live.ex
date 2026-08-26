@@ -1,0 +1,17 @@
+defmodule IeltsWeb.SpeakingSetupLive do
+  use IeltsWeb, :live_view
+
+  import IeltsWeb.SkillSetupComponents, only: [speaking_setup_page: 1]
+
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, :page_title, "Speaking Setup")}
+  end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <.speaking_setup_page flash={@flash} />
+    """
+  end
+end

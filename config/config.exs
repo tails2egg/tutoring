@@ -10,6 +10,9 @@ import Config
 config :ielts,
   generators: [timestamp_type: :utc_datetime]
 
+config :ielts, :phone_verification_delivery, :logger
+config :ielts, :phone_verification_show_code, config_env() in [:dev, :test]
+
 # Configure the endpoint
 config :ielts, IeltsWeb.Endpoint,
   url: [host: "localhost"],

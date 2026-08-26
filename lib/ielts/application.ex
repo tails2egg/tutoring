@@ -10,6 +10,7 @@ defmodule Ielts.Application do
     children = [
       IeltsWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:ielts, :dns_cluster_query) || :ignore},
+      Ielts.PhoneVerification,
       {Phoenix.PubSub, name: Ielts.PubSub},
       # Start a worker by calling: Ielts.Worker.start_link(arg)
       # {Ielts.Worker, arg},

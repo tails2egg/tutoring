@@ -33,6 +33,7 @@ defmodule IeltsWeb.Layouts do
     doc: "the id of the current tab, used to highlight the bottom tab bar"
 
   attr :class, :any, default: nil, doc: "extra classes for the content section"
+  attr :hide_chrome, :boolean, default: false, doc: "hide the app header and footer"
 
   slot :inner_block
 
@@ -41,7 +42,10 @@ defmodule IeltsWeb.Layouts do
 
     ~H"""
     <div class="flex min-h-dvh flex-col bg-background">
-      <header class="sticky top-0 z-50 w-full sm:pt-3 md:pt-4">
+      <header
+        :if={!@hide_chrome && @active_tab != :home}
+        class="sticky top-0 z-50 w-full sm:pt-3 md:pt-4"
+      >
         <div class="mx-auto w-full max-w-3xl lg:max-w-5xl sm:px-4">
           <nav class="flex h-14 items-center justify-between gap-3 rounded-b-2xl bg-[linear-gradient(to_right,#7f60ea,#647fe8,#34a6dd,#39acad)] px-4 shadow-main backdrop-blur-md sm:rounded-2xl sm:px-6 md:h-16">
             <div class="flex items-center gap-2">
@@ -77,25 +81,31 @@ defmodule IeltsWeb.Layouts do
         {render_slot(@inner_block)}
       </main>
 
-      <footer class="sticky bottom-0 z-40 w-full sm:pb-3 md:pb-4">
-        <div class="mx-auto w-full max-w-xl sm:px-4">
+      <footer
+        :if={!@hide_chrome}
+        class="bottom-nav sticky bottom-0 z-40 w-full"
+        style="padding-bottom: env(safe-area-inset-bottom, 0px);"
+      >
+        <div class="mx-auto w-full max-w-[430px]">
           <nav
             aria-label="Main"
-            class="flex h-16 items-stretch justify-around overflow-hidden rounded-t-2xl bg-white px-1 shadow-main sm:rounded-2xl sm:px-2 md:h-[4.5rem]"
+            class="flex min-h-18 items-stretch justify-around overflow-hidden rounded-t-[1.6rem] border border-slate-100 bg-white px-1 shadow-[0_-8px_28px_rgba(15,23,42,0.10)]"
           >
             <.link
               :for={item <- @nav_items}
-              navigate={item.path}
+              href={if(item.kind == :href, do: item.path)}
+              navigate={if(item.kind == :navigate, do: item.path)}
               aria-current={item.id == @active_tab && "page"}
+              data-contact-gated={if(@active_tab == :home && item.id != :home, do: "true")}
               data-active={to_string(item.id == @active_tab)}
-              class="group relative flex flex-1 flex-col items-center justify-center gap-1 rounded-xl text-muted transition-colors data-[active=true]:text-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              class="group relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl text-[#8B91A7] transition-colors data-[active=true]:text-[#0A84FF] hover:text-[#0A84FF] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A84FF]"
             >
-              <span class="absolute inset-x-3 top-0 hidden h-1 rounded-full bg-brand group-data-[active=true]:block sm:inset-x-4"></span>
+              <span class="absolute inset-x-5 top-0 hidden h-1 rounded-full bg-[#0A84FF] group-data-[active=true]:block"></span>
               <.icon
                 name={if(item.id == @active_tab, do: item.icon_active, else: item.icon)}
-                class="size-6 md:size-7"
+                class="size-6"
               />
-              <span class="text-[11px] font-medium leading-none sm:text-xs">{item.label}</span>
+              <span class="max-w-full truncate text-[11px] font-medium leading-none">{item.label}</span>
             </.link>
           </nav>
         </div>
@@ -116,28 +126,40 @@ defmodule IeltsWeb.Layouts do
         path: ~p"/",
         label: "Home",
         icon: "hero-home",
-        icon_active: "hero-home-solid"
+        icon_active: "hero-home-solid",
+        kind: :navigate
       },
       %{
         id: :activities,
         path: ~p"/activities",
-        label: "Activities",
-        icon: "hero-squares-2x2",
-        icon_active: "hero-squares-2x2-solid"
+        label: "Practice",
+        icon: "hero-pencil-square",
+        icon_active: "hero-pencil-square-solid",
+        kind: :navigate
       },
       %{
-        id: :payment,
-        path: ~p"/payment",
-        label: "Payment",
-        icon: "hero-credit-card",
-        icon_active: "hero-credit-card-solid"
+        id: :courses,
+        path: ~p"/vocabulary",
+        label: "Courses",
+        icon: "hero-book-open",
+        icon_active: "hero-book-open-solid",
+        kind: :href
       },
       %{
         id: :progress,
         path: ~p"/progress",
-        label: "Progress",
-        icon: "hero-chart-bar",
-        icon_active: "hero-chart-bar-solid"
+        label: "Mock Tests",
+        icon: "hero-clipboard-document-check",
+        icon_active: "hero-clipboard-document-check-solid",
+        kind: :navigate
+      },
+      %{
+        id: :payment,
+        path: ~p"/payment",
+        label: "Profile",
+        icon: "hero-user",
+        icon_active: "hero-user-solid",
+        kind: :navigate
       }
     ]
   end

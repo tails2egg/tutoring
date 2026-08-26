@@ -10,14 +10,35 @@ defmodule IeltsWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :json_api do
+    plug :accepts, ["json"]
+    plug :fetch_session
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
   scope "/", IeltsWeb do
     pipe_through :browser
 
+    get "/.well-known/appspecific/com.chrome.devtools.json", WellKnownController, :chrome_devtools
+
     live "/", PageLive, :home
+    live "/writing/setup", WritingSetupLive, :setup
+    live "/reading/setup", ReadingSetupLive, :setup
+    live "/listening/setup", ListeningSetupLive, :setup
+    live "/speaking/setup", SpeakingSetupLive, :setup
     live "/activities", PageLive, :activities
     live "/payment", PageLive, :payment
     live "/progress", PageLive, :progress
+    live "/privacy-policy", PageLive, :privacy_policy
     get "/vocabulary", VocabularyController, :index
+  end
+
+  scope "/", IeltsWeb do
+    pipe_through :json_api
+
+    post "/phone/otp", PhoneVerificationController, :create
+    post "/phone/verify", PhoneVerificationController, :verify
   end
 
   # Enable LiveDashboard in development
